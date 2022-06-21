@@ -192,10 +192,7 @@ def save_csv_to_db(csv_file, db_table):
 def africa_nairobi_date_now():
     """ this app needs to save dates in EAT"""
     # format = "%Y/%m/%d %H:%M:%S"
-
     now_utc = datetime.now(timezone('UTC'))
-
     now_nairobi = now_utc.astimezone(timezone('Africa/Nairobi'))
-
     now_nairobi_date = now_nairobi.date()
     return now_nairobi_date
