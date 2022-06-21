@@ -19,7 +19,7 @@ ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
 ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
 
 
-@users.route('/users/signin', methods=["POST"])
+@users.route('/users/login', methods=["POST"])
 def user_signin():
     """
     Signin a user into the system.
