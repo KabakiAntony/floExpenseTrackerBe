@@ -1,6 +1,8 @@
 from flask import Flask
 from config import ProductionConfig
 from flask_migrate import Migrate
+from app.api.view.user import users as users_blueprint
+from app.api.view.expense import expenses as expenses_blueprint
 from flask_cors import CORS
 
 
@@ -18,7 +20,8 @@ def create_app():
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db)
-    # register blueprints here
+    app.register_blueprint(users_blueprint)
+    app.register_blueprint(expenses_blueprint)
     app.app_context().push()
 
     return app
