@@ -24,6 +24,7 @@ class Expense(db.Model):
 class ExpenseSchema(ma.Schema):
     class Meta:
         fields = (
+            "id",
             "expense_sys_id", "expense_for",
             "purpose", "expense_client", "amount",
             "expense_date"
