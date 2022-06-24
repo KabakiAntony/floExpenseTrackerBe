@@ -159,14 +159,16 @@ def convert_to_csv(file_path, upload_dir):
     return csv_file_path
 
 
-def add_expense_sys_id(csv_file):
+def add_expense_sys_id(csv_file, expense_for):
     """ adding a unique system id for an expense """
     data_file = pandas.read_csv(csv_file)
     rows = data_file.count()[0]
     data_file.insert(1, "expense_sys_id", "")
+    data_file.insert(2, "expense_for", "")
     for row in range(rows):
         new_id = generate_unique_string()
         data_file.loc[row, "expense_sys_id"] = new_id
+        data_file.loc[row, "expense_for"] = expense_for
         row + 1
 
     data_file.to_csv(csv_file, index=False)
