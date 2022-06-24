@@ -45,8 +45,9 @@ def user_signin():
         if not user:
             abort(
                 404,
-                "User account could not be found,\
-                    Please sign up to use the application.")
+                """
+                User account could not be found,
+                Please sign up to use the application.""")
 
         _user = user_schema.dump(user)
         _password = _user["password"]
@@ -54,12 +55,14 @@ def user_signin():
         if not User.compare_password(_password, password):
             abort(
                 403,
-                "Email and or password is incorrect,\
-                    please check and try again.")
+                """
+                Email and or password is incorrect,
+                please check and try again.""")
 
         token = jwt.encode(
             {
                 "id": _user["user_sys_id"],
+                "screen_name": _user['username'],
                 "exp":
                 datetime.datetime.utcnow() + datetime.timedelta(minutes=480),
             },
@@ -71,8 +74,7 @@ def user_signin():
             {
                 "message":
                 "Signed in successfully preparing your dashboard...",
-                "auth_token": token.decode('utf-8'),
-                "screen_name": _user['username'],
+                "auth_token": token.decode('utf-8')
             }, 200
         )
         return response
