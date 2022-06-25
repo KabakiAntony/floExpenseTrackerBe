@@ -149,26 +149,24 @@ def get_expenses(user, start_date, end_date):
         return custom_make_response("error", f"{str(e)}", e.code)
 
 
-@expenses.route('/expenses/<expense_for>', methods=['GET'])
+@expenses.route('/expenses/todays', methods=['GET'])
 @token_required
-def get_todays_expenses(user, expense_for):
+def get_todays_expenses(user):
     """
-    this method will be used to get expenses for a given day,
-    for the given person
+    this method will be used to get expenses for today
     """
     try:
         todays_date = africa_nairobi_date_now()
-        expense_data = Expense.query.filter_by(expense_for=expense_for).\
-            filter_by(expense_date=todays_date).all()
+        expense_data = Expense.query.filter_by(expense_date=todays_date).all()
 
         if not expense_data:
             abort(404, """
             You don't have any expenses today,
             add some and try again.
             """)
-        daily_expenses = expenses_schema.dump(expense_data)
+        todays_expenses = expenses_schema.dump(expense_data)
 
-        return custom_make_response("data", daily_expenses, 200)
+        return custom_make_response("data", todays_expenses, 200)
 
     except Exception as e:
         return custom_make_response("error", f"{str(e)}", e.code)
@@ -223,37 +221,13 @@ def delete_expense(user, id):
 
 @expenses.route('/expenses', methods=['GET'])
 @token_required
-def get_monies_to_foreman(user):
-    """ get all monies given to foreman"""
+def get_all_expenses(user):
+    """ get all expenses """
     try:
-        expense_data = Expense.query.filter_by(expense_for="flo").\
-            filter_by(purpose="foreman").all()
+        expense_data = Expense.query.all()
 
         if not expense_data:
-            abort(404, """
-            You have not expensed money to foreman,
-            expense some and try again.
-            """)
-        all_expenses = expenses_schema.dump(expense_data)
-
-        return custom_make_response("data", all_expenses, 200)
-
-    except Exception as e:
-        return custom_make_response("error", f"{str(e)}", e.code)
-
-
-@expenses.route('/expenses/foreman', methods=['GET'])
-@token_required
-def get_all_foreman_expenses(user):
-    """ get all historical expenses by foreman """
-    try:
-        expense_data = Expense.query.filter_by(expense_for="foreman").all()
-
-        if not expense_data:
-            abort(404, """
-            You have not expensed money to foreman,
-            expense some and try again.
-            """)
+            abort(404, "No expenses found.")
         all_expenses = expenses_schema.dump(expense_data)
 
         return custom_make_response("data", all_expenses, 200)
