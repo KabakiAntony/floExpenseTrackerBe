@@ -133,11 +133,11 @@ def generate_unique_string():
     creating a user account even though they are not
     used anywhere else.
     """
-    random_source = string.ascii_letters + string.digits + string.punctuation
+    random_source = string.ascii_letters + string.digits
     unique_string = random.choice(string.ascii_lowercase)
     unique_string += random.choice(string.ascii_uppercase)
     unique_string += random.choice(string.digits)
-    unique_string += random.choice(string.punctuation)
+    # unique_string += random.choice(string.punctuation)
 
     for i in range(8):
         unique_string += random.choice(random_source)
@@ -163,8 +163,8 @@ def add_expense_sys_id(csv_file, expense_for):
     """ adding a unique system id for an expense """
     data_file = pandas.read_csv(csv_file)
     rows = data_file.count()[0]
-    data_file.insert(1, "expense_sys_id", "")
-    data_file.insert(2, "expense_for", "")
+    data_file.insert(0, "expense_sys_id", "")
+    data_file.insert(1, "expense_for", "")
     for row in range(rows):
         new_id = generate_unique_string()
         data_file.loc[row, "expense_sys_id"] = new_id
